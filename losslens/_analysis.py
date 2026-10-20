@@ -23,10 +23,13 @@ def summarize(surf) -> dict:
     center = surf.center_loss
     out = {"center_loss": center}
 
+    mid = len(x) // 2
     iy, ix = np.unravel_index(np.argmin(Z), Z.shape)
+    if np.isclose(Z[mid, mid], Z[iy, ix], rtol=1e-6, atol=0):
+        iy = ix = mid  # ties (flat regions) count as the trained model being the lowest point
     out["grid_min_loss"] = float(Z[iy, ix])
     out["grid_min_at"] = (float(x[ix]), float(surf.y[iy]))
-    out["min_is_center"] = bool(ix == len(x) // 2 and iy == len(x) // 2)
+    out["min_is_center"] = bool(ix == mid and iy == mid)
 
     angles = np.linspace(0, 2 * np.pi, 64, endpoint=False)
     for frac in RADII:

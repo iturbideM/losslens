@@ -10,6 +10,9 @@ loss around your model: a wide, flat valley or a narrow, sharp one.
 
 - **Tour of everything losslens does:**
   [open in Colab](https://colab.research.google.com/github/iturbideM/losslens/blob/main/examples/losslens_tour.ipynb)
+- **The paper's pretrained ResNet-56 models (with and without skip connections), compared with
+  the paper's figures:**
+  [open in Colab](https://colab.research.google.com/github/iturbideM/losslens/blob/main/examples/paper_resnets.ipynb)
 - **Homework template:**
   [open in Colab](https://colab.research.google.com/github/iturbideM/losslens/blob/main/examples/homework_template.ipynb)
 
