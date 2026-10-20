@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "losslens"
+version = "0.1.0"
+description = "Visualize the loss landscape of a trained PyTorch model in a notebook."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0",
+    "numpy",
+    "matplotlib",
+    "plotly",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["losslens"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
