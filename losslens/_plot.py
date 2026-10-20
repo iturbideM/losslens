@@ -1,6 +1,8 @@
 """Plotting helpers shared by Surface and compare()."""
 from __future__ import annotations
 
+import uuid
+
 import numpy as np
 
 CLIP_PERCENTILE = 95
@@ -50,16 +52,49 @@ class InteractiveFigure:
         self.figure = figure
 
     def _repr_html_(self):
-        return self.figure.to_html(include_plotlyjs="cdn", full_html=False,
-                                   config={"responsive": True})
+        # Draw only after plotly.js has loaded. Editors like VS Code insert outputs dynamically,
+        # where a <script src=...> does not block the script after it, so plotly's own HTML
+        # would try to draw before plotly.js exists ("Plotly is not defined").
+        from plotly.offline import get_plotlyjs_version
+
+        version = get_plotlyjs_version()
+        url = f"https://cdn.plot.ly/plotly-{version}.min.js"
+        div = "losslens-" + uuid.uuid4().hex
+        fig_json = self.figure.to_json().replace("</", "<\\/")
+        height = self.figure.layout.height or 500
+        return f"""<div id="{div}" style="width:100%;height:{height}px;"></div>
+<script>
+(function() {{
+  var el = document.getElementById("{div}");
+  var fig = {fig_json};
+  function draw(P) {{
+    try {{ P.newPlot(el, fig.data, fig.layout, {{responsive: true}}); }}
+    catch (e) {{ el.innerText = "losslens: could not draw the 3D plot (" + e + ")"; }}
+  }}
+  if (window.Plotly && window.Plotly.version === "{version}") {{ draw(window.Plotly); return; }}
+  if (typeof window.define === "function" && window.define.amd && window.require) {{
+    window.require.config({{paths: {{losslens_plotly: "{url[:-3]}"}}}});
+    window.require(["losslens_plotly"], draw);
+    return;
+  }}
+  var s = document.createElement("script");
+  s.src = "{url}";
+  s.onload = function() {{ draw(window.Plotly); }};
+  s.onerror = function() {{
+    el.innerText = "losslens: could not load plotly.js from cdn.plot.ly. " +
+                   "Check the internet connection, or save the plot with .write_html(path).";
+  }};
+  document.head.appendChild(s);
+}})();
+</script>"""
 
     def show(self):
         from IPython.display import display
         display(self)
 
     def write_html(self, path):
-        """Save as a standalone web page."""
-        self.figure.write_html(path, include_plotlyjs="cdn")
+        """Save as a standalone web page you can open in any browser, even offline."""
+        self.figure.write_html(path, include_plotlyjs=True)
 
 
 def loss_label(log):

@@ -39,6 +39,12 @@ Compare several models on the same color scale:
 losslens.compare({"no skip": surf_a, "with skip": surf_b})
 ```
 
+Save the 3D plot as a web page that opens in any browser (works offline):
+
+```python
+surf.plot_3d().write_html("landscape_3d.html")
+```
+
 Save a surface so you don't have to recompute it:
 
 ```python
