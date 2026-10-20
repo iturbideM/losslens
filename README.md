@@ -6,6 +6,13 @@ See what the loss looks like around your trained PyTorch model.
 measures the loss at every point of a grid. The result is a 2D map (and a 3D surface) of the
 loss around your model: a wide, flat valley or a narrow, sharp one.
 
+## Notebooks
+
+- **Tour of everything losslens does:**
+  [open in Colab](https://colab.research.google.com/github/iturbideM/losslens/blob/main/examples/losslens_tour.ipynb)
+- **Homework template:**
+  [open in Colab](https://colab.research.google.com/github/iturbideM/losslens/blob/main/examples/homework_template.ipynb)
+
 ## Install
 
 ```python
