@@ -95,3 +95,15 @@ def test_center_loss_equals_direct_loss():
         direct = F.cross_entropy(net.eval()(X), y).item()
     assert surf.center_loss == pytest.approx(direct, rel=1e-5)
     assert surf.Z[1, 1] == pytest.approx(direct, rel=1e-5)
+
+
+def test_plots_summary_compare_and_save_load(tmp_path):
+    a = losslens.surface(SmallCNN(), image_data(), loss_fn=nn.CrossEntropyLoss(),
+                         resolution=5, **QUIET)
+    a.plot(); a.plot(log=True); a.plot_3d(); a.plot_slice()
+    s = a.summary(show=False)
+    assert s["center_loss"] == a.center_loss
+    a.save(tmp_path / "a.npz")
+    b = losslens.load(tmp_path / "a.npz")
+    assert np.array_equal(a.Z, b.Z) and a.meta == b.meta
+    losslens.compare({"a": a, "b": b})
