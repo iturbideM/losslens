@@ -64,9 +64,10 @@ class Surface:
         fig.update_layout(
             title=title or self.meta.get("model"), height=550, showlegend=False,
             scene=dict(xaxis_title="direction 1", yaxis_title="direction 2",
-                       zaxis_title=_plot.loss_label(log), zaxis=dict(range=[vmin, vmax])),
+                       zaxis_title=_plot.loss_label(log), zaxis=dict(range=[vmin, vmax]),
+                       camera=dict(eye=dict(x=1.6, y=1.6, z=1.1))),
             margin=dict(l=0, r=0, t=40, b=0))
-        return fig
+        return _plot.InteractiveFigure(fig)
 
     def plot_slice(self, log=False, zmax=None, title=None):
         """1D cuts through the trained model along each direction."""

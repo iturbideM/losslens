@@ -38,6 +38,30 @@ def prepare(Z, vmin, vmax, log=False):
     return np.clip(Z, vmin, vmax)
 
 
+class InteractiveFigure:
+    """A plotly figure that displays the same way in Colab, JupyterLab and VS Code.
+
+    Editors render plotly's own output format with their own bundled renderer, which can be
+    missing or out of date (blank plots in VS Code). Plain HTML that loads the matching
+    plotly.js avoids that. The plotly figure itself is available as `.figure`.
+    """
+
+    def __init__(self, figure):
+        self.figure = figure
+
+    def _repr_html_(self):
+        return self.figure.to_html(include_plotlyjs="cdn", full_html=False,
+                                   config={"responsive": True})
+
+    def show(self):
+        from IPython.display import display
+        display(self)
+
+    def write_html(self, path):
+        """Save as a standalone web page."""
+        self.figure.write_html(path, include_plotlyjs="cdn")
+
+
 def loss_label(log):
     return "log10(loss)" if log else "loss"
 
