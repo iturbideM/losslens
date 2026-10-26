@@ -22,7 +22,7 @@ def resolve_device(model, device):
 
 @contextlib.contextmanager
 def working_copy(model, device):
-    """Yield a model we may freely modify; the student's model is left exactly as it was."""
+    """Yield a model we may freely modify; the caller's model is left exactly as it was."""
     try:
         work = copy.deepcopy(model)
         restore = None

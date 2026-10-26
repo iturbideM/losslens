@@ -33,7 +33,7 @@ surf = losslens.surface(model, val_loader, loss_fn=nn.CrossEntropyLoss())
 surf.plot()        # 2D contour map; the red star is your trained model
 surf.plot_3d()     # interactive 3D surface: drag to rotate
 surf.plot_slice()  # 1D cuts through your model along each direction
-surf.summary()     # key numbers for your report
+surf.summary()     # key numbers about the landscape
 ```
 
 Compare several models on the same color scale:

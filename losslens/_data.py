@@ -1,4 +1,4 @@
-"""Turn whatever data the student passes into a fixed, cached list of batches."""
+"""Turn whatever data the caller passes into a fixed, cached list of batches."""
 from __future__ import annotations
 
 import torch

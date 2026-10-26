@@ -78,7 +78,7 @@ def test_orientation_x_is_columns():
     assert np.all(np.diff(surf.Z[0]) > 0)
 
 
-def test_student_model_is_untouched():
+def test_input_model_is_untouched():
     net = SmallCNN().train()
     before = copy.deepcopy(net.state_dict())
     losslens.surface(net, image_data(), loss_fn=nn.CrossEntropyLoss(), resolution=3, **QUIET)
